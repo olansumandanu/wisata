@@ -371,7 +371,7 @@ export const Section = () => {
                     .map(
                       (list: string, idx: number) =>
                         idx > 0 && (
-                          <li key={idx}>{list.trim().split("\\.")[0]}.</li>
+                          <li key={idx}>{list.trim().split(".")[0]}.</li>
                         )
                     )}
                   <li>
