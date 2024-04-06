@@ -67,6 +67,53 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     ],
     model: "gpt-3.5-turbo",
   });
+
+  const location = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      {
+        role: "user",
+        content: "lokasi " + params.city,
+      },
+    ],
+    model: "gpt-3.5-turbo",
+  });
+
+  const weather = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      {
+        role: "user",
+        content: "keterangan singkat cuaca di " + params.city,
+      },
+    ],
+    model: "gpt-3.5-turbo",
+  });
+
+  const livingCost = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      {
+        role: "user",
+        content:
+          "keterangan singkat dua baris mata uang dan biaya hidup di " +
+          params.city,
+      },
+    ],
+    model: "gpt-3.5-turbo",
+  });
+
+  const language = await openai.chat.completions.create({
+    messages: [
+      { role: "system", content: "You are a helpful assistant." },
+      {
+        role: "user",
+        content: "keterangan singkat dua baris bahasa di " + params.city,
+      },
+    ],
+    model: "gpt-3.5-turbo",
+  });
+
   const travels = await openai.chat.completions.create({
     messages: [
       // { role: "system", content: "You are a helpful assistant." },
@@ -115,6 +162,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     hotels: res.data.results,
     descripsi: descripsi.choices[0].message.content,
     history: history.choices[0].message.content,
+    location: location.choices[0].message.content,
+    weather: weather.choices[0].message.content,
+    livingCost: livingCost.choices[0].message.content,
+    language: language.choices[0].message.content,
     about: information.choices[0].message.content,
     travels: travels.choices[0].message.content,
   });
@@ -222,8 +273,28 @@ export const Header = () => {
 
 export const Section = () => {
   const [isAbout, setIsAbout] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { hotels, city, descripsi, history, travels }: any = useLoaderData();
+  const {
+    hotels,
+    city,
+    descripsi,
+    language,
+    livingCost,
+    location,
+    history,
+    travels,
+    weather,
+  }: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    hotels: any[];
+    city: string;
+    descripsi: string;
+    language: string;
+    livingCost: string;
+    location: string;
+    history: string;
+    travels: string;
+    weather: string;
+  } = useLoaderData();
   return (
     <section className="bg-[#F8F8F8] w-screen min:h-full flex justify-center py-5">
       <div className=" w-2/4 space-y-3">
@@ -301,45 +372,28 @@ export const Section = () => {
                   <img src={MarkerIcon} alt="" />
                   Tentang Lokasi
                 </dt>
-                <dd className="text-xs font-light">
-                  Yogyakarta terkenal dengan budaya Jawa yang kaya, jadi
-                  pastikan untuk menjelajahi pertunjukan seni tradisional,
-                  musik, dan tari selama kunjungan Anda.
-                </dd>
+                <dd className="text-xs font-light">{location}</dd>
               </div>
               <div className="flex flex-col gap-1">
                 <dt className="text-sm font-semibold inline-flex gap-1 items-center">
                   <img src={WeatherIcon} alt="" />
                   Cuacanya
                 </dt>
-                <dd className="text-xs font-light">
-                  Yogyakarta mempunyai iklim muson tropis dengan musim hujan
-                  pada bulan Oktober sampai April dan musim kemarau pada bulan
-                  Mei sampai September. Suhu rata-rata berkisar antara 75-90°F
-                  (24-32°C) sepanjang tahun.
-                </dd>
+                <dd className="text-xs font-light">{weather}</dd>
               </div>
               <div className="flex flex-col gap-1">
                 <dt className="text-sm font-semibold inline-flex gap-1 items-center">
                   <img src={WalletIcon} alt="" />
                   Mata uang & Biaya
                 </dt>
-                <dd className="text-xs font-light">
-                  Yogyakarta adalah salah satu destinasi tujuan wisata yang
-                  terkenal dengan biaya yang cukup terjangkau dan terbilang
-                  murah.
-                </dd>
+                <dd className="text-xs font-light">{livingCost}</dd>
               </div>
               <div className="flex flex-col gap-1">
                 <dt className="text-sm font-semibold inline-flex gap-1 items-center">
                   <img src={LanguageIcon} alt="" />
                   Bahasa
                 </dt>
-                <dd className="text-xs font-light">
-                  Yogyakarta adalah salah satu destinasi tujuan wisata yang
-                  terkenal dengan biaya yang cukup terjangkau dan terbilang
-                  murah.
-                </dd>
+                <dd className="text-xs font-light">{language}</dd>
               </div>
             </dl>
           )}
