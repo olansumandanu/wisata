@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="h-screen bg-[url('assets/images/background.svg')] bg-cover">
+    <div className="h-screen bg-desktop bg-cover">
       <div className="fixed inset-0 w-full h-full bg-[#024F55] opacity-[46%]"></div>
       <div className="relative w-full h-full">
         <Header />
