@@ -21,10 +21,18 @@ export const Section = () => {
     | undefined = useActionData<typeof action>();
   const submit = useSubmit();
 
+  const date = new Date();
+
+  // add a day
+  const now = date.setDate(date.getDate() + 1);
+  const next = date.setDate(date.getDate() + 2);
+  const formatter = new Intl.DateTimeFormat("en-CA");
+  console.log(formatter.format(next));
+
   // const [showDatePicker, setModalDatePicker] = useState<boolean>(false);
   const [citySelected, setCitySelected] = useState<string>();
-  const [checkInDate] = useState<string>("2024-04-05");
-  const [checkOutDate] = useState<string>("2024-04-06");
+  const [checkInDate] = useState<string>(formatter.format(now));
+  const [checkOutDate] = useState<string>(formatter.format(next));
   const [cityId, setCityId] = useState<number>();
   const [citys, setCitys] = useState(
     actions?.citys?.filter(
