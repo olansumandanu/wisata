@@ -1,4 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Footer } from "~/components/Footer";
+import { Header } from "~/components/Header";
+import { Section } from "~/components/Section";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,33 +12,13 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div className="h-screen bg-[url('assets/images/background.svg')] bg-cover">
+      <div className="fixed inset-0 w-full h-full bg-[#024F55] opacity-[46%]"></div>
+      <div className="relative w-full h-full">
+        <Header />
+        <Section />
+        <Footer />
+      </div>
     </div>
   );
 }
