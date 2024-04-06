@@ -1,56 +1,65 @@
-import { Form } from "@remix-run/react";
-
+import { Form, useActionData, useSubmit } from "@remix-run/react";
 import logo from "~/assets/images/logo.svg";
 import AppStoreBtn from "~/assets/images/app_store.svg";
 import GooglePlayBtn from "~/assets/images/Google_Play_Store_badge.svg";
 import MarkerIcon from "~/assets/images/streamline_ai-navigation-spark-solid.svg";
+import { useEffect, useState } from "react";
+import { action } from "~/routes/_index";
 
 export const Section = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   const actions: any = useActionData();
-  //   const submit = useSubmit();
+  const actions:
+    | {
+        citys: {
+          name: string;
+          id: number;
+          cityId: number;
+          country: string;
+          city: string;
+          typeName: string;
+        }[];
+      }
+    | undefined = useActionData<typeof action>();
+  const submit = useSubmit();
 
-  //   const [showDatePicker, setModalDatePicker] = useState<boolean>(false);
-  //   const [citySelected, setCitySelected] = useState<string>();
-  //   const [checkInDate] = useState<string>("2024-04-05");
-  //   const [checkOutDate] = useState<string>("2024-04-06");
-  //   const [cityId, setCityId] = useState<number>();
-  //   const [citys, setCitys] = useState(
-  //     actions?.citys?.filter(
-  //       (city: { typeName: string }) =>
-  //         city.typeName === "City" || city.typeName === "Neighborhood"
-  //     ) || []
-  //   );
+  // const [showDatePicker, setModalDatePicker] = useState<boolean>(false);
+  const [citySelected, setCitySelected] = useState<string>();
+  const [checkInDate] = useState<string>("2024-04-05");
+  const [checkOutDate] = useState<string>("2024-04-06");
+  const [cityId, setCityId] = useState<number>();
+  const [citys, setCitys] = useState(
+    actions?.citys?.filter(
+      (city: { typeName: string }) =>
+        city.typeName === "City" || city.typeName === "Neighborhood"
+    ) || []
+  );
 
-  //   useEffect(() => {
-  //     setCitys(
-  //       actions?.citys?.filter(
-  //         (city: { typeName: string }) =>
-  //           city.typeName === "City" || city.typeName === "Neighborhood"
-  //       ) || []
-  //     );
-  //   }, [actions?.citys, citySelected]);
+  useEffect(() => {
+    setCitys(
+      actions?.citys?.filter(
+        (city: { typeName: string }) =>
+          city.typeName === "City" || city.typeName === "Neighborhood"
+      ) || []
+    );
+  }, [actions?.citys, citySelected]);
   // const [value, setValue] = useState({
   //   startDate: null,
   //   endDate: null,
   // });
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // const handleValueChange = (newValue: any) => {
   //   setValue(newValue);
   // };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   const handleTextValueChange = (e: any) => {
-  //     setCitySelected(e.target.value);
-  //     submit({ keywords: e.target.value }, { method: "put" });
-  //   };
+  const handleTextValueChange = (e: any) => {
+    setCitySelected(e.target.value);
+    submit({ keywords: e.target.value }, { method: "put" });
+  };
 
-  //   const handleCitySelected = (city: { name: string; cityId: number }) => {
-  //     setCitys([]);
-  //     setCitySelected(city.name);
-  //     setCityId(city.cityId);
-  //   };
+  const handleCitySelected = (city: { name: string; cityId: number }) => {
+    setCitys([]);
+    setCitySelected(city.name);
+    setCityId(city.cityId);
+  };
 
   return (
     <>
@@ -71,19 +80,19 @@ export const Section = () => {
                 >
                   <input
                     name="cityId"
-                    // value={cityId || ""}
+                    value={cityId || ""}
                     type="hidden"
-                    // onChange={() => console.log("")}
+                    onChange={() => console.log("")}
                   />
                   <input
                     name="checkInDate"
-                    // value={checkInDate || ""}
+                    value={checkInDate || ""}
                     type="hidden"
                     onChange={() => console.log("")}
                   />
                   <input
                     name="checkOutDate"
-                    // value={checkOutDate || ""}
+                    value={checkOutDate || ""}
                     type="hidden"
                     onChange={() => console.log("")}
                   />
@@ -92,8 +101,8 @@ export const Section = () => {
                     name="keywords"
                     className="w-full text-lg font-light bg-transparent  outline-none"
                     placeholder="City"
-                    // value={citySelected || ""}
-                    // onChange={handleTextValueChange}
+                    value={citySelected || ""}
+                    onChange={handleTextValueChange}
                     autoComplete="off"
                   />
                   <button
@@ -103,7 +112,7 @@ export const Section = () => {
                     <img src={MarkerIcon} className="w-4 h-4" alt="" />
                   </button>
                 </Form>
-                {/* {citys.length > 0 && (
+                {citys.length > 0 && (
                   <ul
                     className="bg-white relative z-100 w-full space-y-2 mt-1"
                     onMouseLeave={() => setCitys([])}
@@ -135,13 +144,13 @@ export const Section = () => {
                         )
                     )}
                   </ul>
-                )} */}
+                )}
               </div>
               {/* <Datepicker
-                  inputClassName="w-full z-1 rounded-md focus:ring-0 font-normal bg-white relative "
-                  value={value}
-                  onChange={handleValueChange}
-                /> */}
+              inputClassName="w-full z-1 rounded-md focus:ring-0 font-normal bg-white relative "
+              value={value}
+              onChange={handleValueChange}
+            /> */}
               <button
                 className="inline-flex gap-2 text-sm text-nowrap text-white px-4 py-2.5 text-center rounded-full items-center bg-white hover:bg-opacity-[30%] bg-opacity-[15%]"
                 // onClick={() => setModalDatePicker(true)}
