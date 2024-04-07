@@ -5,9 +5,8 @@ import { action } from "~/routes/_index";
 import { dateFormatter, stringDateFormat } from "~/utils/Date";
 import { DatePickerModal } from "./modals/DatePickerModal";
 
-import { Calendar, LogoDesktop, LogoSmall, Marker } from "~/assets/Icons";
-import AppsIos from "~/assets/images/app_store.png";
-import AppsGoogle from "~/assets/images/app_google.png";
+import { Calendar, Marker } from "~/assets/Icons";
+import { AppsGoogle, AppsIos, LogoDesktop, LogoMobile } from "~/assets/images";
 
 export const Section = () => {
   const actions:
@@ -70,8 +69,8 @@ export const Section = () => {
   return (
     <section className="relative flex-1 flex items-center justify-center">
       <div className="flex flex-col">
-        <LogoSmall className="md:hidden mx-auto" />
-        <LogoDesktop className="hidden md:block mx-auto" />
+        <img src={LogoMobile} alt="logo" className="md:hidden mx-auto" />
+        <img src={LogoDesktop} alt="logo" className="hidden md:block mx-auto" />
         <p className="text-white text-center text-xl font-light md:text-nowrap w-[300px] md:w-auto mx-auto">
           Buat Rencana Perjalanan Anda Lebih{" "}
           <b className="font-extrabold">Cepat!</b>

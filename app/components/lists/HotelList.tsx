@@ -1,7 +1,7 @@
 import { Key } from "react";
 
 import { HotelItem } from "./HotelItem";
-import AgodaIcon from "~/assets/images/agoda_mainlogo_stack_positive_ai_Main Logo 1.svg";
+import AgodaIcon from "~/assets/images/agoda.png";
 
 export const HotelList = ({
   hotels,

@@ -7,6 +7,8 @@ export default {
       backgroundImage: {
         desktop: "url('/images/bg-desktop.png')",
         mobile: "url('/images/bg-mobile.png')",
+        "city-desktop": "url('/images/prambanan_desktop.png')",
+        "city-mobile": "url('/images/prambanan_mobile.png')",
       },
     },
   },

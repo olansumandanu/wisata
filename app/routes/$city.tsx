@@ -1,10 +1,11 @@
 import { json, LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useState } from "react";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import OpenAI from "openai";
 
-import logo from "~/assets/images/logo.svg";
 import logoBlack from "~/assets/images/logo_black.svg";
+import LogoDesktopSmall from "~/assets/images/logo_desktop_small.png";
+import LogoMobileSmall from "~/assets/images/logo_mobile_small.png";
 import InstagramIcon from "~/assets/images/mdi_instagram.svg";
 import EmailIcon from "~/assets/images/ic_outline-email.svg";
 import MarkerIcon from "~/assets/images/marker.svg";
@@ -17,7 +18,7 @@ import { OpsiPlanModal } from "~/components/modals/OpsiPlanModal";
 import { AgodaMapModal } from "~/components/modals/AgodaMapModal";
 import { HotelList } from "~/components/lists/HotelList";
 import { ActivityList } from "~/components/lists/ActivityList";
-import { Button, Card, FlyButton, Ratting } from "~/components";
+import { Button, FlyButton, Ratting } from "~/components";
 import { countDays, stringDateFormat } from "~/utils/Date";
 
 export const meta: MetaFunction = () => {
@@ -188,7 +189,7 @@ export default function Index() {
   const [modalAgodaMapOpen, setModalAgodaMapOpen] = useState(false);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen w-screen flex flex-col">
       <Header />
       <Section />
       <Footer />
@@ -224,48 +225,51 @@ export const Header = () => {
   } = useLoaderData();
 
   return (
-    <header className="relative bg-[url('assets/images/prambanan.svg')] bg-cover">
-      <div className="relative ">
-        <div className="flex justify-between py-5 px-20">
-          <img src={logo} alt="logo" className="h-[26px] w-fit" />
-          <div className="inline-flex gap-2">
+    <header className="w-screen bg-city-mobile md:bg-city-desktop py-4 md:py-6 px-2 md:px-10 bg-cover">
+      <div className="fixed inset-0 bg-[#024F55] opacity-[46%]"></div>
+      <div className="relative flex justify-between items-center">
+        <img src={LogoMobileSmall} alt="logo" className="pl-2 md:hidden" />
+        <img src={LogoDesktopSmall} alt="logo" className="hidden md:block" />
+        <div className="inline-flex gap-1 float-end">
+          <button
+            type="button"
+            className="text-center inline-flex items-center me-2 "
+          >
+            <img src={InstagramIcon} alt="logo" />
+            <span className="sr-only">Icon description</span>
+          </button>
+          <button
+            type="button"
+            className="text-center inline-flex items-center me-2 "
+          >
+            <img src={EmailIcon} alt="logo" />
+            <span className="sr-only">Icon description</span>
+          </button>
+          <Form action="/auth" method="post">
             <button
-              type="button"
-              className="text-center inline-flex items-center me-2 "
-            >
-              <img src={InstagramIcon} alt="logo" />
-              <span className="sr-only">Icon description</span>
-            </button>
-            <button
-              type="button"
-              className="text-center inline-flex items-center me-2 "
-            >
-              <img src={EmailIcon} alt="logo" />
-              <span className="sr-only">Icon description</span>
-            </button>
-            <button
-              type="button"
-              className="bg-white focus:ring-4 focus:outline-none gap-2 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 "
+              type="submit"
+              className="bg-white focus:ring-4 focus:outline-none gap-2 font-xs md:font-sm rounded-lg text-sm p-2 text-center inline-flex items-center me-2 "
             >
               <img src={GoogleIcon} alt="logo" />
-              Login dengan Google
+              <div className="hidden md:block">Login dengan Google</div>
+              <div className="md:hidden">Login</div>
             </button>
-          </div>
+          </Form>
         </div>
-        <div className="space-y-2 my-6">
-          <h1 className="text-4xl text-center text-white">
-            {days} Hari Menelusuri Budaya di {city}
-          </h1>
-          <p className="text-sm text-center text-white">
-            {`${stringDateFormat(checkInDate)} - ${stringDateFormat(
-              checkOutDate
-            )}`}
-          </p>
-          <p className="text-sm text-center text-white">
-            Orang lain menilai rencana ini
-          </p>
-          <Ratting color="light" />
-        </div>
+      </div>
+      <div className="relative space-y-1 pt-4">
+        <h1 className="text-4xl text-center text-white">
+          {days} Hari Menelusuri Budaya di {city}
+        </h1>
+        <p className="text-xs text-center text-white font-light">
+          {`${stringDateFormat(checkInDate)} - ${stringDateFormat(
+            checkOutDate
+          )}`}
+        </p>
+        <p className="text-xs text-center text-white font-light">
+          Orang lain menilai rencana ini
+        </p>
+        <Ratting color="light" />
       </div>
     </header>
   );
@@ -296,11 +300,11 @@ export const Section = () => {
     weather: string;
   } = useLoaderData();
   return (
-    <section className="bg-[#F8F8F8] w-screen min:h-full flex justify-center py-5">
-      <div className=" w-2/4 space-y-3">
-        <Card>
-          <ul className="flex flex-wrap text-sm font-medium ">
-            <li className="me-2">
+    <section className="relative flex-1 bg-[#F8F8F8] w-screen min:h-full flex p-2 md:py-5 md:justify-center">
+      <div className="w-full md:w-2/4 space-y-3">
+        <div className="rounded-lg bg-white p-2 md:py-4 md:px-8 space-y-2">
+          <ul className="inline-flex gap-2">
+            <li>
               <button
                 type="button"
                 onClick={() => setIsAbout(true)}
@@ -397,8 +401,8 @@ export const Section = () => {
               </div>
             </dl>
           )}
-        </Card>
-        <Card>
+        </div>
+        <div className="rounded-lg bg-white p-2 md:py-4 md:px-8 space-y-2">
           <h1 className="font-bold text-sm py-2">Rencana Perjalanan</h1>
           {travels.split("Hari").map(
             (days: string, index: number) =>
@@ -411,7 +415,7 @@ export const Section = () => {
                     <h1 className="text-xl text-[#019DA9]">Hari {index}</h1>
                     {/* <div className="font-bold text-[#019DA9]">
                         Candi dan Warisan Budaya
-                      </div> */}
+                      </div>  */}
                     <p className="text-xs font-bold">
                       {days
                         .split(":")[0]
@@ -482,58 +486,54 @@ export const Section = () => {
                 </ul>
               )
           )}
-        </Card>
+        </div>
       </div>
     </section>
   );
 };
 
 export const Footer = () => (
-  <footer className="bg-white ">
-    <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-      <div className="flex justify-between">
-        <div className="mb-6 md:mb-0 w-[400px] space-y-3 flex-1">
-          <img src={logoBlack} className="h-8 me-3" alt="FlowBite Logo" />
-          <p className="text-xs text-gray-500 w-[400px]">
-            Aplikasi kami menggunakan kecerdasan buatan untuk menyusun itinerary
-            yang sesuai dengan keinginan Anda. Hemat waktu, nikmati perjalanan
-            tanpa repot!
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-8 text-sm sm:gap-6 flex-0.5">
-          <div className="space-y-2">
-            <h2 className="text-xs font-medium text-gray-900">Mulai Dulu</h2>
-            <ul className="text-sm font-semibold space-y-1">
-              <li>Rencana perjalanan ke Jogja</li>
-              <li>Rencana perjalanan ke Bandung</li>
-              <li>Rencana perjalanan ke Jogja</li>
-              <li>Rencana perjalanan ke Bandung</li>
-              <li>Rencana perjalanan ke Jogja</li>
-              <li>Rencana perjalanan ke Bandung</li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-xs font-medium text-gray-900">Perusahaan</h2>
-            <ul className="text-sm font-semibold space-y-1">
-              <li>Partnership</li>
-              <li>Carreer</li>
-              <li>Terms</li>
-              <li>Privacy</li>
-              <li>Instagram</li>
-              <li>Blog</li>
-            </ul>
-          </div>
-        </div>
+  <footer className="relative bg-white ">
+    <div className="flex md:flex-row flex-col px-4  gap-4 mt-4">
+      <div className="space-y-2 py-4 md:px-10 flex-1">
+        <img src={logoBlack} alt="Logo" />
+        <p className="text-xs text-gray-500 text-center justify-center md:text-start md:w-[400px]">
+          Aplikasi kami menggunakan kecerdasan buatan untuk menyusun itinerary
+          yang sesuai dengan keinginan Anda. Hemat waktu, nikmati perjalanan
+          tanpa repot!
+        </p>
       </div>
-      <div className="flex bg-[#F9FAFB] mt-8 pt-8">
-        <span className="text-sm text-gray-500 text-center w-full">
-          © 2024{" "}
-          <a href="https://flowbite.com/" className="hover:underline">
-            Rekreasi™
-          </a>
-          . All Rights Reserved.
-        </span>
+      <div className="space-y-2 md:w-[300px] text-center md:text-start">
+        <h2 className="text-xs font-medium text-gray-900">Mulai Dulu</h2>
+        <ul className="text-sm font-semibold space-y-1">
+          <li>Rencana perjalanan ke Jogja</li>
+          <li>Rencana perjalanan ke Bandung</li>
+          <li>Rencana perjalanan ke Jogja</li>
+          <li>Rencana perjalanan ke Bandung</li>
+          <li>Rencana perjalanan ke Jogja</li>
+          <li>Rencana perjalanan ke Bandung</li>
+        </ul>
       </div>
+      <div className="space-y-2 md:w-[300px] text-center md:text-start">
+        <h2 className="text-xs font-medium text-gray-900">Perusahaan</h2>
+        <ul className="text-sm font-semibold space-y-1">
+          <li>Partnership</li>
+          <li>Carreer</li>
+          <li>Terms</li>
+          <li>Privacy</li>
+          <li>Instagram</li>
+          <li>Blog</li>
+        </ul>
+      </div>
+    </div>
+    <div className="flex bg-[#F9FAFB] my-8 pt-4">
+      <span className="text-sm text-gray-500 text-center w-full">
+        © 2024{" "}
+        <a href="https://flowbite.com/" className="hover:underline">
+          Rekreasi™
+        </a>
+        . All Rights Reserved.
+      </span>
     </div>
   </footer>
 );

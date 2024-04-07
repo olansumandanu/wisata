@@ -101,8 +101,8 @@ export const Ratting = ({ color }: { color: string; rate?: number }) => {
           <div
             className={
               color === "dark"
-                ? "text-base font-light"
-                : "text-base font-light text-white"
+                ? "text-sm font-light"
+                : "text-sm font-light text-white"
             }
           >
             dari 200+ penilaian
