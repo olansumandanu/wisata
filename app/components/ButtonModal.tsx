@@ -8,7 +8,7 @@ export const ButtonModal = (props: {
   return (
     <button
       {...props}
-      className="bg-white border border-gray-400 text-center focus:bg-[#019DA9] hover:bg-[#019DA9] hover:text-white focus:text-white gap-2 font-sm rounded-full text-sm px-5 py-2 inline-flex items-center justify-center w-full flex-1"
+      className="bg-white border border-gray-400 text-center focus:bg-[#019DA9] hover:bg-[#019DA9] hover:text-white focus:text-white gap-2 md:text-sm rounded-full text-xs px-5 py-2 inline-flex items-center justify-center flex-1"
     >
       {props.children}
     </button>

@@ -1,7 +1,7 @@
 import { Key } from "react";
 
 import { HotelItem } from "./HotelItem";
-import AgodaIcon from "~/assets/images/agoda.png";
+import { AgodaDesktop, AgodaMobile } from "~/assets/images";
 
 export const HotelList = ({
   hotels,
@@ -18,7 +18,8 @@ export const HotelList = ({
     <div className="flex flex-col">
       <div className="flex justify-between py-2">
         <p className="text-sm font-medium">Pilihan Hotel untuk menginap</p>
-        <img src={AgodaIcon} alt="" />
+        <img src={AgodaMobile} alt="logo" className="md:hidden" />
+        <img src={AgodaDesktop} alt="logo" className="hidden md:block" />
       </div>
       <div className="relative overflow-x-auto">
         <div className="inline-flex gap-3">
