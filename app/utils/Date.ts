@@ -22,3 +22,5 @@ export const countDays = (checkIn: string, checkOut: string) => {
   const time_difference = Math.abs(outDate.getTime() - inDate.getTime()) / 1000;
   return Math.floor(time_difference / (60 * 60 * 24));
 };
+
+export const dateFormatter = new Intl.DateTimeFormat("en-CA");
