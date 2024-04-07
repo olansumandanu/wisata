@@ -4,10 +4,6 @@ import { Form, useLoaderData } from "@remix-run/react";
 import OpenAI from "openai";
 
 import logoBlack from "~/assets/images/logo_black.svg";
-import LogoDesktopSmall from "~/assets/images/logo_desktop_small.png";
-import LogoMobileSmall from "~/assets/images/logo_mobile_small.png";
-import InstagramIcon from "~/assets/images/mdi_instagram.svg";
-import EmailIcon from "~/assets/images/ic_outline-email.svg";
 import MarkerIcon from "~/assets/images/marker.svg";
 import WeatherIcon from "~/assets/images/material-symbols_weather-mix.svg";
 import WalletIcon from "~/assets/images/mingcute_wallet-fill.svg";
@@ -20,6 +16,14 @@ import { HotelList } from "~/components/lists/HotelList";
 import { ActivityList } from "~/components/lists/ActivityList";
 import { Button, FlyButton, Ratting } from "~/components";
 import { countDays, stringDateFormat } from "~/utils/Date";
+import {
+  EmailDesktop,
+  EmailMobile,
+  InstagramDesktop,
+  InstagramMobile,
+  LogoDesktopSmall,
+  LogoMobileSmall,
+} from "~/assets/images";
 
 export const meta: MetaFunction = () => {
   return [
@@ -235,14 +239,20 @@ export const Header = () => {
             type="button"
             className="text-center inline-flex items-center me-2 "
           >
-            <img src={InstagramIcon} alt="logo" />
+            <img src={InstagramMobile} alt="logo" className="md:hidden" />
+            <img
+              src={InstagramDesktop}
+              alt="logo"
+              className="hidden md:block"
+            />
             <span className="sr-only">Icon description</span>
           </button>
           <button
             type="button"
             className="text-center inline-flex items-center me-2 "
           >
-            <img src={EmailIcon} alt="logo" />
+            <img src={EmailMobile} alt="logo" className="md:hidden" />
+            <img src={EmailDesktop} alt="logo" className="hidden md:block" />
             <span className="sr-only">Icon description</span>
           </button>
           <Form action="/auth" method="post">
@@ -526,7 +536,7 @@ export const Footer = () => (
         </ul>
       </div>
     </div>
-    <div className="flex bg-[#F9FAFB] my-8 pt-4">
+    <div className="flex bg-[#F9FAFB] mt-8 py-4">
       <span className="text-sm text-gray-500 text-center w-full">
         © 2024{" "}
         <a href="https://flowbite.com/" className="hover:underline">

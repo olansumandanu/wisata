@@ -1,7 +1,12 @@
-import InstagramIcon from "~/assets/images/mdi_instagram.svg";
-import EmailIcon from "~/assets/images/ic_outline-email.svg";
 import GoogleIcon from "~/assets/images/devicon_google.svg";
 import { Form } from "@remix-run/react";
+
+import {
+  EmailDesktop,
+  EmailMobile,
+  InstagramDesktop,
+  InstagramMobile,
+} from "~/assets/images";
 
 export const Header = () => (
   <header className="relative flex justify-end py-4 px-2 md:px-10">
@@ -10,14 +15,16 @@ export const Header = () => (
         type="button"
         className="text-center inline-flex items-center me-2 "
       >
-        <img src={InstagramIcon} alt="logo" />
+        <img src={InstagramMobile} alt="logo" className="md:hidden" />
+        <img src={InstagramDesktop} alt="logo" className="hidden md:block" />
         <span className="sr-only">Icon description</span>
       </button>
       <button
         type="button"
         className="text-center inline-flex items-center me-2 "
       >
-        <img src={EmailIcon} alt="logo" />
+        <img src={EmailMobile} alt="logo" className="md:hidden" />
+        <img src={EmailDesktop} alt="logo" className="hidden md:block" />
         <span className="sr-only">Icon description</span>
       </button>
       <Form action="/auth" method="post">
