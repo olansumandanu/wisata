@@ -102,13 +102,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Index() {
   return (
-    <div className="h-screen bg-desktop bg-cover">
-      <div className="fixed inset-0 w-full h-full bg-[#024F55] opacity-[46%]"></div>
-      <div className="relative w-full h-full">
-        <Header />
-        <Section />
-        <Footer />
-      </div>
+    <div className="flex flex-col w-screen h-screen sm:bg-desktop bg-mobile bg-cover">
+      <div className="fixed inset-0 bg-[#024F55] opacity-[46%]"></div>
+      <Header />
+      <Section />
+      <Footer />
     </div>
   );
 }

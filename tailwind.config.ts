@@ -5,7 +5,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        desktop: "url('/images/bg-desktop.svg')",
+        desktop: "url('/images/bg-desktop.png')",
+        mobile: "url('/images/bg-mobile.png')",
       },
     },
   },

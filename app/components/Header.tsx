@@ -4,8 +4,8 @@ import GoogleIcon from "~/assets/images/devicon_google.svg";
 import { Form } from "@remix-run/react";
 
 export const Header = () => (
-  <header className="flex justify-end py-5 px-20">
-    <div className="inline-flex gap-2">
+  <header className="relative flex justify-end py-4 px-2 md:px-10">
+    <div className="inline-flex gap-1">
       <button
         type="button"
         className="text-center inline-flex items-center me-2 "
@@ -23,10 +23,11 @@ export const Header = () => (
       <Form action="/auth" method="post">
         <button
           type="submit"
-          className="bg-white focus:ring-4 focus:outline-none gap-2 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 "
+          className="bg-white focus:ring-4 focus:outline-none gap-2 font-xs md:font-sm rounded-lg text-sm p-2 text-center inline-flex items-center me-2 "
         >
           <img src={GoogleIcon} alt="logo" />
-          Login dengan Google
+          <div className="hidden md:block">Login dengan Google</div>
+          <div className="md:hidden">Login</div>
         </button>
       </Form>
     </div>

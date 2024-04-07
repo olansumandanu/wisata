@@ -18,7 +18,6 @@ export const DatePickerModal = ({
   setCheckOutDate: (checkOut: string) => void;
   onActionClose: () => void;
 }) => {
-  console.log("checkOutDate", checkOutDate);
   const [startDate, setStartDate] = useState<Date | null>(
     new Date(checkInDate)
   );
@@ -116,7 +115,7 @@ export const DatePickerModal = ({
                 )}
                 selectsRange
                 inline
-                locale="enGB" // Set locale
+                locale="enGB"
                 monthsShown={2}
               />
             </div>

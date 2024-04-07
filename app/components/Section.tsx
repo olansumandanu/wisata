@@ -1,12 +1,13 @@
 import { Form, useActionData, useSubmit } from "@remix-run/react";
-import logo from "~/assets/images/logo.svg";
-import AppStoreBtn from "~/assets/images/app_store.svg";
-import GooglePlayBtn from "~/assets/images/Google_Play_Store_badge.svg";
-import MarkerIcon from "~/assets/images/streamline_ai-navigation-spark-solid.svg";
+
 import { useEffect, useState } from "react";
 import { action } from "~/routes/_index";
 import { dateFormatter, stringDateFormat } from "~/utils/Date";
 import { DatePickerModal } from "./modals/DatePickerModal";
+
+import { Calendar, LogoDesktop, LogoSmall, Marker } from "~/assets/Icons";
+import AppsIos from "~/assets/images/app_store.png";
+import AppsGoogle from "~/assets/images/app_google.png";
 
 export const Section = () => {
   const actions:
@@ -67,139 +68,103 @@ export const Section = () => {
   };
 
   return (
-    <>
-      <section className="">
-        <div className="flex flex-col items-center justify-center mt-[100px]">
-          <div className="w-fit md:mt-0 sm:max-w-md xl:p-0">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8 flex flex-col items-center w-[420px]">
-              <div className="space-y-1">
-                <img src={logo} alt="logo" />
-                <p className="text-white text-center text-lg w-full">
-                  Buat Rencana Perjalanan Anda Lebih Cepat!
-                </p>
-              </div>
-              <div className="relative w-full">
-                <Form
-                  method="post"
-                  className=" w-full  bg-white hover:bg-blue-100 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm pl-5 pr-2 py-1.5 text-center flex items-center justify-between "
-                >
-                  <input
-                    name="cityId"
-                    value={cityId || ""}
-                    type="hidden"
-                    onChange={() => console.log("")}
-                  />
-                  <input
-                    name="checkInDate"
-                    value={checkInDate || ""}
-                    type="hidden"
-                    onChange={() => console.log("")}
-                  />
-                  <input
-                    name="checkOutDate"
-                    value={checkOutDate || ""}
-                    type="hidden"
-                    onChange={() => console.log("")}
-                  />
-                  <input
-                    type="text"
-                    name="keywords"
-                    className="w-full text-lg font-light bg-transparent  outline-none"
-                    placeholder="City"
-                    value={citySelected || ""}
-                    onChange={handleTextValueChange}
-                    autoComplete="off"
-                  />
-                  <button
-                    className="float-end bg-[#019DA9] p-2.5 text-white rounded-full"
-                    type="submit"
-                  >
-                    <img src={MarkerIcon} className="w-4 h-4" alt="" />
-                  </button>
-                </Form>
-                {citys.length > 0 && (
-                  <ul
-                    className="bg-white relative z-100 w-full space-y-2 mt-1"
-                    onMouseLeave={() => setCitys([])}
-                  >
-                    {citys?.map(
-                      (
-                        city: {
-                          name: string;
-                          id: number;
-                          cityId: number;
-                          country: string;
-                          city: string;
-                          typeName: string;
-                        },
-                        index: number
-                      ) =>
-                        index < 5 && (
-                          <li key={city.id}>
-                            <button
-                              onClick={() => handleCitySelected(city)}
-                              className="hover:bg-gray-200 px-3 py-1 w-full text-left"
-                            >
-                              <p className="text-sm font-bold">{city.name}</p>
-                              <p className="text-xs text-gray-400 font-light">
-                                {city.typeName}: {city.city}, {city.country}
-                              </p>
-                            </button>
-                          </li>
-                        )
-                    )}
-                  </ul>
-                )}
-              </div>
-              <button
-                className="inline-flex gap-2 text-sm text-nowrap text-white px-4 py-2.5 text-center rounded-full items-center bg-white hover:bg-opacity-[30%] bg-opacity-[15%]"
-                onClick={() => setModalDatePicker(true)}
-              >
-                <svg
-                  className="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                {"  " + stringDateFormat(checkInDate) + " - "}
-                <svg
-                  className="w-4 h-4"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                {"  " + stringDateFormat(checkOutDate)}
-              </button>
-              <div className="inline-flex justify-between gap-4">
-                <button>
-                  <img src={AppStoreBtn} alt="logo" />
-                </button>
-                <button>
-                  <img src={GooglePlayBtn} alt="logo" />
-                </button>
-              </div>
-            </div>
-          </div>
+    <section className="relative flex-1 flex items-center justify-center">
+      <div className="flex flex-col">
+        <LogoSmall className="md:hidden mx-auto" />
+        <LogoDesktop className="hidden md:block mx-auto" />
+        <p className="text-white text-center text-xl font-light md:text-nowrap w-[300px] md:w-auto mx-auto">
+          Buat Rencana Perjalanan Anda Lebih{" "}
+          <b className="font-extrabold">Cepat!</b>
+        </p>
+        <Form
+          method="post"
+          className="w-full bg-white hover:bg-blue-100 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm pl-5 pr-1.5 py-1 mt-5 mb-2 text-center flex items-center justify-between mx-auto"
+        >
+          <input
+            name="cityId"
+            value={cityId || ""}
+            type="hidden"
+            onChange={() => console.log("")}
+          />
+          <input
+            name="checkInDate"
+            value={checkInDate || ""}
+            type="hidden"
+            onChange={() => console.log("")}
+          />
+          <input
+            name="checkOutDate"
+            value={checkOutDate || ""}
+            type="hidden"
+            onChange={() => console.log("")}
+          />
+          <input
+            type="text"
+            name="keywords"
+            className="w-full text-sm font-light bg-transparent  outline-none"
+            placeholder="City"
+            value={citySelected || ""}
+            onChange={handleTextValueChange}
+            autoComplete="off"
+          />
+          <button
+            className="float-end bg-[#019DA9] p-2.5 text-white rounded-full"
+            type="submit"
+          >
+            <Marker />
+          </button>
+        </Form>
+        {citys.length > 0 && (
+          <ul
+            className="bg-white relative z-100 w-full space-y-2 mt-1"
+            onMouseLeave={() => setCitys([])}
+          >
+            {citys?.map(
+              (
+                city: {
+                  name: string;
+                  id: number;
+                  cityId: number;
+                  country: string;
+                  city: string;
+                  typeName: string;
+                },
+                index: number
+              ) =>
+                index < 5 && (
+                  <li key={city.id}>
+                    <button
+                      onClick={() => handleCitySelected(city)}
+                      className="hover:bg-gray-200 px-3 py-1 w-full text-left"
+                    >
+                      <p className="text-sm font-bold">{city.name}</p>
+                      <p className="text-xs text-gray-400 font-light">
+                        {city.typeName}: {city.city}, {city.country}
+                      </p>
+                    </button>
+                  </li>
+                )
+            )}
+          </ul>
+        )}
+        <button
+          className="w-fit inline-flex gap-2 text-sm text-nowrap text-white px-4 py-2 mb-4 mt-1 text-center rounded-full items-center bg-white hover:bg-opacity-[30%] bg-opacity-[15%] mx-auto"
+          onClick={() => setModalDatePicker(true)}
+        >
+          <Calendar />
+          {"  " + stringDateFormat(checkInDate) + " - "}
+          <Calendar />
+          {"  " + stringDateFormat(checkOutDate)}
+        </button>
+        <div className="inline-flex justify-between gap-2 w-fit mx-auto">
+          <button>
+            <img src={AppsIos} alt="logo" />
+          </button>
+          <button>
+            <img src={AppsGoogle} alt="logo" />
+          </button>
         </div>
-      </section>
+      </div>
       <DatePickerModal
         show={showDatePicker}
         onActionClose={() => setModalDatePicker(false)}
@@ -208,6 +173,6 @@ export const Section = () => {
         checkOutDate={checkOutDate}
         setCheckOutDate={setCheckOutDate}
       />
-    </>
+    </section>
   );
 };
