@@ -1,17 +1,19 @@
-import { Key } from "react";
-
 import KlookIcon from "~/assets/images/image 8.svg";
 import { ActivityItem } from "./ActivityItem";
 
 export const ActivityList = ({
-  hotels,
+  klooks,
 }: {
-  hotels: {
-    starRating: string;
-    imageURL: string;
-    hotelId: Key | null | undefined;
-    hotelName: string;
-    landingURL: string;
+  klooks: {
+    data: {
+      title: string;
+      cover_url: string;
+      deep_link: string;
+      review_obj: {
+        star: string;
+        text: string;
+      };
+    };
   }[];
 }) => {
   return (
@@ -22,15 +24,22 @@ export const ActivityList = ({
       </div>
       <div className="relative overflow-x-auto">
         <div className="inline-flex gap-3">
-          {hotels.map(
-            (hotel: {
-              starRating: string;
-              imageURL: string;
-              hotelId: Key | null | undefined;
-              hotelName: string;
-              landingURL: string;
-            }) => (
-              <ActivityItem {...hotel} key={hotel.hotelId} />
+          {klooks.map(
+            (
+              klook: {
+                data: {
+                  title: string;
+                  cover_url: string;
+                  deep_link: string;
+                  review_obj: {
+                    star: string;
+                    text: string;
+                  };
+                };
+              },
+              idx
+            ) => (
+              <ActivityItem {...klook} key={idx} />
             )
           )}
         </div>

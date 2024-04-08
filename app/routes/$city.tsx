@@ -159,6 +159,16 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   };
   const res = await citySearch(data);
+  const klooks = fetch(
+    `https://www.klook.com/v1/cardinfocenterservicesrv/search/platform/complete_search?sort=most_relevant&query=${params.city}&page_num=1&page_size=10&is_only_total=false`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      return data.result.search_result.cards;
+    })
+    .catch(() => {
+      return [];
+    });
   return json({
     city: params.city,
     days: sumOfDay,
@@ -173,6 +183,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     language: language.choices[0].message.content,
     about: information.choices[0].message.content,
     travels: travels.choices[0].message.content,
+    klooks: await klooks,
   });
 };
 
@@ -297,6 +308,7 @@ export const Section = () => {
     history,
     travels,
     weather,
+    klooks,
   }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hotels: any[];
@@ -308,7 +320,10 @@ export const Section = () => {
     history: string;
     travels: string;
     weather: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    klooks: any[];
   } = useLoaderData();
+
   return (
     <section className="relative flex-1 bg-[#F8F8F8] w-screen min:h-full flex p-2 md:py-5 md:justify-center">
       <div className="w-full md:w-2/4 space-y-3">
@@ -446,7 +461,7 @@ export const Section = () => {
                     <HotelList hotels={hotels} />
                   </li>
                   <li>
-                    <ActivityList hotels={hotels} />
+                    <ActivityList klooks={klooks} />
                     {index === 1 && (
                       <div className="inline-flex gap-0.5 mt-2">
                         <Button>Buat ulang</Button>
