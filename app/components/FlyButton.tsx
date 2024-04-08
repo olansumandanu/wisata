@@ -1,8 +1,8 @@
 export const FlyButton = ({ onAction }: { onAction: () => void }) => (
-  <div className="fixed bottom-0 w-screen text-center py-4">
+  <div className="fixed bottom-0 w-screen text-right md:text-center p-4 ">
     <button
       onClick={onAction}
-      className="inline-flex gap-2 px-4 py-2 bg-white text-[#019DA9] text-sm border-[#D5D5D5] border rounded-full items-center"
+      className="inline-flex gap-2 py-2 px-2 md:px-4 bg-white text-[#019DA9] text-sm border-[#D5D5D5] border rounded-lg md:rounded-full items-center"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ export const FlyButton = ({ onAction }: { onAction: () => void }) => (
           d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
         />
       </svg>
-      Opsi Rencana
+      <p className="hidden md:block">Opsi Rencana</p>
     </button>
   </div>
 );

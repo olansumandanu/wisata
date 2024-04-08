@@ -4,6 +4,7 @@ export interface IUser {
   id?: number | undefined;
   name?: string;
   email: string;
+  photo?: string;
 }
 
 export async function getDatables() {
@@ -28,19 +29,16 @@ export async function getUsers() {
 export async function getUsersById(userId: number) {
   return await prisma.user.findUnique({
     where: { id: userId },
-    select: { id: true, email: true },
+    select: { id: true, email: true, name: true, photo: true },
   });
 }
 
 export async function createUser(user: IUser) {
-  return user.id
-    ? await prisma.user.update({
-        where: { id: user.id },
-        data: { ...user },
-      })
-    : await prisma.user.create({
-        data: { email: user.email, name: user.name },
-      });
+  return await prisma.user.upsert({
+    where: { email: user.email },
+    update: { ...user },
+    create: { ...user },
+  });
 }
 
 export async function updateUser(id: number, data: IUser) {

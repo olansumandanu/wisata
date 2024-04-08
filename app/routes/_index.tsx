@@ -3,17 +3,26 @@ import {
   type MetaFunction,
   json,
   ActionFunctionArgs,
+  LoaderFunctionArgs,
 } from "@remix-run/node";
 import axios from "axios";
 import { Footer } from "~/components/Footer";
 import { Header } from "~/components/Header";
 import { Section } from "~/components/Section";
+import { authenticator } from "~/services/auth.server";
 
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
     { name: "description", content: "Welcome to Remix!" },
   ];
+};
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const isAuthenticated = await authenticator.isAuthenticated(request);
+  return json({
+    isAuthenticated: !!isAuthenticated,
+  });
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -101,6 +110,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
+  // console.log("Key: ", process.env.OPENAI_API_KEY);
   return (
     <div className="flex flex-col w-screen h-screen sm:bg-desktop bg-mobile bg-cover">
       <div className="fixed inset-0 bg-[#024F55] opacity-[46%]"></div>

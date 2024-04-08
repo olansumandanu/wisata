@@ -17,7 +17,11 @@ authenticator.use(
     },
     async ({ profile }) => {
       // Get the user data from your DB or API using the tokens and profile
-      return createUser({ email: profile.emails[0].value, name: "" });
+      return createUser({
+        email: profile.emails[0].value,
+        name: profile.displayName,
+        photo: profile.photos[0].value,
+      });
     }
   )
 );

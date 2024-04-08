@@ -1,6 +1,10 @@
 import { json, LoaderFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useState } from "react";
-import { Form, useLoaderData } from "@remix-run/react";
+import {
+  ClientLoaderFunctionArgs,
+  Form,
+  useLoaderData,
+} from "@remix-run/react";
 import OpenAI from "openai";
 
 import logoBlack from "~/assets/images/logo_black.svg";
@@ -24,6 +28,7 @@ import {
   LogoDesktopSmall,
   LogoMobileSmall,
 } from "~/assets/images";
+import localforage from "localforage";
 
 export const meta: MetaFunction = () => {
   return [
@@ -169,23 +174,88 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     .catch(() => {
       return [];
     });
-  return json({
-    city: params.city,
-    days: sumOfDay,
+  return json(
+    {
+      city: params.city,
+      days: sumOfDay,
+      checkInDate,
+      checkOutDate,
+      hotels: res.data.results,
+      descripsi: descripsi.choices[0].message.content,
+      history: history.choices[0].message.content,
+      location: location.choices[0].message.content,
+      weather: weather.choices[0].message.content,
+      livingCost: livingCost.choices[0].message.content,
+      language: language.choices[0].message.content,
+      about: information.choices[0].message.content,
+      travels: travels.choices[0].message.content,
+      klooks: await klooks,
+    },
+    {
+      headers: { "Cache-Control": "max-age=3600, public" },
+    }
+  );
+};
+
+export async function clientLoader({
+  params,
+  serverLoader,
+}: ClientLoaderFunctionArgs) {
+  const cacheKey = `city-${params.city}`;
+  const cached = await localforage.getItem(cacheKey);
+  if (cached) return { ...cached };
+  const {
+    city,
+    days,
     checkInDate,
     checkOutDate,
-    hotels: res.data.results,
-    descripsi: descripsi.choices[0].message.content,
-    history: history.choices[0].message.content,
-    location: location.choices[0].message.content,
-    weather: weather.choices[0].message.content,
-    livingCost: livingCost.choices[0].message.content,
-    language: language.choices[0].message.content,
-    about: information.choices[0].message.content,
-    travels: travels.choices[0].message.content,
-    klooks: await klooks,
+    hotels,
+    descripsi,
+    history,
+    location,
+    weather,
+    livingCost,
+    language,
+    about,
+    travels,
+    klooks,
+  }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  any = await serverLoader();
+  localforage.setItem(cacheKey, {
+    city,
+    days,
+    checkInDate,
+    checkOutDate,
+    hotels,
+    descripsi,
+    history,
+    location,
+    weather,
+    livingCost,
+    language,
+    about,
+    travels,
+    klooks,
   });
-};
+  return {
+    city,
+    days,
+    checkInDate,
+    checkOutDate,
+    hotels,
+    descripsi,
+    history,
+    location,
+    weather,
+    livingCost,
+    language,
+    about,
+    travels,
+    klooks,
+  };
+}
+
+clientLoader.hydrate = true;
 
 export default function Index() {
   const {
