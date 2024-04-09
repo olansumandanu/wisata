@@ -13,6 +13,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Destionation {
+  id              Int       @id @default(autoincrement())
+  city            String
+  cityId          Int       @unique
+  country         String 
+  typeName        String 
+  tags            String[] 
+  description_ID  String?
+  description_EN  String?
+  history_ID      String?
+  history_EN      String?
+  location_ID     String?
+  location_EN     String?
+  weather_ID      String?
+  weather_EN      String?
+  livingCost_ID   String?
+  livingCost_EN   String?
+  language_ID     String?
+  language_EN     String?
+  
+  tours           AgendaTour[]
+}
+
+model AgendaTour {
+  id              Int               @id @default(autoincrement())
+  day             Int 
+  title_ID        String  
+  title_EN        String  
+  morning_ID      String  
+  morning_EN      String
+  noon_ID         String  
+  noon_EN         String
+  afternoon_ID    String  
+  afternoon_EN    String
+  evening_ID      String  
+  evening_EN      String  
+
+  destination     Destionation      @relation(fields: [destinationId], references: [id])
+  destinationId   Int
+}
+
 model User {
   id      Int     @id @default(autoincrement())
   email   String  @unique

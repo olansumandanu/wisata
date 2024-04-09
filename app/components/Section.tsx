@@ -1,31 +1,19 @@
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { action } from "~/routes/_index";
 import { dateFormatter, stringDateFormat } from "~/utils/Date";
 import { DatePickerModal } from "./modals/DatePickerModal";
 
 import { Calendar, Marker } from "~/assets/Icons";
 import { AppsGoogle, AppsIos, LogoDesktop, LogoMobile } from "~/assets/images";
+import { ICity } from "~/models/destionation.server";
 
 export const Section = () => {
-  const actions:
-    | {
-        citys: {
-          name: string;
-          id: number;
-          cityId: number;
-          country: string;
-          city: string;
-          typeName: string;
-        }[];
-      }
-    | undefined = useActionData<typeof action>();
+  const actions = useActionData<typeof action>();
   const submit = useSubmit();
 
   const date = new Date();
-
-  // add a day
   const now = date.setDate(date.getDate() + 1);
   const next = date.setDate(date.getDate() + 2);
 
@@ -52,7 +40,7 @@ export const Section = () => {
           city.typeName === "City" || city.typeName === "Neighborhood"
       ) || []
     );
-  }, [actions?.citys, citySelected]);
+  }, [actions?.citys]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleTextValueChange = (e: any) => {
@@ -60,11 +48,14 @@ export const Section = () => {
     submit({ keywords: e.target.value }, { method: "put" });
   };
 
-  const handleCitySelected = (city: { name: string; cityId: number }) => {
-    setCitys([]);
-    setCitySelected(city.name);
-    setCityId(city.cityId);
-  };
+  const handleCitySelected = useCallback(
+    (destination: { city: string; cityId: number }) => {
+      setCitys(() => citys.splice(0, citys.length));
+      setCitySelected(destination.city);
+      setCityId(destination.cityId);
+    },
+    [citys]
+  );
 
   return (
     <section className="relative flex-1 flex items-center justify-center">
@@ -102,7 +93,7 @@ export const Section = () => {
             name="keywords"
             className="w-full text-sm font-light bg-transparent  outline-none"
             placeholder="City"
-            value={citySelected || ""}
+            value={citySelected}
             onChange={handleTextValueChange}
             autoComplete="off"
           />
@@ -119,24 +110,14 @@ export const Section = () => {
             onMouseLeave={() => setCitys([])}
           >
             {citys?.map(
-              (
-                city: {
-                  name: string;
-                  id: number;
-                  cityId: number;
-                  country: string;
-                  city: string;
-                  typeName: string;
-                },
-                index: number
-              ) =>
+              (city: ICity, index: number) =>
                 index < 5 && (
-                  <li key={city.id}>
+                  <li key={index}>
                     <button
                       onClick={() => handleCitySelected(city)}
                       className="hover:bg-gray-200 px-3 py-1 w-full text-left"
                     >
-                      <p className="text-sm font-bold">{city.name}</p>
+                      <p className="text-sm font-bold">{city.city}</p>
                       <p className="text-xs text-gray-400 font-light">
                         {city.typeName}: {city.city}, {city.country}
                       </p>

@@ -5,10 +5,12 @@ import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
 } from "@remix-run/node";
-import axios from "axios";
+import { destinationSearch } from "~/actions/agoda.action";
+
 import { Footer } from "~/components/Footer";
 import { Header } from "~/components/Header";
 import { Section } from "~/components/Section";
+import { ICity, createMany, searchCity } from "~/models/destionation.server";
 import { authenticator } from "~/services/auth.server";
 
 export const meta: MetaFunction = () => {
@@ -33,59 +35,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (request.method === "PUT") {
     if (_data.keywords !== "") {
-      const { data } = await axios.post(
-        "https://www.agoda.com/api/gw/TextSearch/Search",
-        {
-          query: _data.keywords,
-          context: {
-            userSettings: {
-              currencyCode: "IDR",
-              language: "en-us",
-            },
-            sessionInfo: {
-              cid: 1891460,
-              id: "ddbbcwllfb0zvptphpfdpehd",
-              searchEngineClicks: {
-                gclid:
-                  "EAIaIQobChMIpMa8lb2phQMVUqRmAh2pfgipEAAYASAAEgJ01fD_BwE",
-              },
-            },
-            debugInfo: {
-              overrideExperiments: [],
-            },
-            trafficMessageInfo: {
-              shouldSendTrafficMessage: true,
-              pageId: 1,
-            },
-            funnel: 0,
-            clientInfo: {
-              userId: "ef4ff1eb-6d8a-41e6-b4e5-553aeebc92f4",
-              applicationName: "MobileWeb",
-              clientVersion: "1.0",
-            },
-            requestInfo: {
-              currentRetryAttempt: 0,
-              pollingId: "",
-              requestId: "23c6e6fc-9ffc-4eaa-ba5f-d1b6306a7abb",
-            },
-          },
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return json({
-        citys: data.textSearchResults as {
-          name: string;
-          id: number;
-          cityId: number;
-          country: string;
-          city: string;
-          typeName: string;
-        }[],
-      });
+      let citys = await searchCity(_data.keywords as string);
+      if (citys.length === 0) {
+        const { data } = await destinationSearch(_data.keywords as string);
+        citys = (await data.textSearchResults)
+          .filter(
+            (destionation: ICity) =>
+              destionation.typeName === "City" &&
+              destionation.country === "Indonesia"
+          )
+          .map((destionation: ICity) => ({
+            city: destionation.city,
+            cityId: destionation.cityId,
+            typeName: destionation.typeName,
+            country: destionation.country,
+            tags: [destionation.city.toLocaleLowerCase()],
+          }));
+        await createMany(citys);
+      }
+      return json({ citys });
     }
   } else if (_data.cityId && _data.cityId !== "") {
     const cityName = _data.keywords;
@@ -110,7 +78,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Index() {
-  // console.log("Key: ", process.env.OPENAI_API_KEY);
   return (
     <div className="flex flex-col w-screen h-screen sm:bg-desktop bg-mobile bg-cover">
       <div className="fixed inset-0 bg-[#024F55] opacity-[46%]"></div>
